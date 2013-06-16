@@ -33,10 +33,10 @@
                             <span data-bind="text: $data.Description"></span></td>
                         <td>
 
-                            <span data-bind="text: '$'+ $data.Price()"></span></td>
+                            <span data-bind="text: '$' + $data.Price()"></span></td>
                         <td>
 
-                            <span data-bind="text: Number((parseFloat($data.LastPrice()) / parseFloat($data.Price())-1) * -100).toFixed(4) + '%'"></span></td>
+                            <span data-bind="text: Number((parseFloat($data.LastPrice()) / parseFloat($data.Price()) - 1) * -100).toFixed(4) + '%'"></span></td>
                         <td>
 
                             <a href='#' data-bind='click: $parent.removeStock' class="btn"><i class="icon-trash"></i>Remove</a>
@@ -58,7 +58,7 @@
         var self = this;
         self.stockToAdd = ko.observable();
         self.allStocks = ko.observableArray([]);
-                
+
         self.addStock = function (event, ui) {
             $(event.target).val("");
 
@@ -98,38 +98,38 @@
                     data: stocks,
                     contentType: 'application/json',
                     processData: false,
-                    dataType : 'json',
+                    dataType: 'json',
                     success: function (data) {
                         if (data.Data.success == true) {
                             var stocks = data.Data.stocks;
                             stocks.forEach(function (element, index, array) {
                                 self.updateStockPrice(element);
                             });
-                            
-           
+
+
                         }
                     }
                 });
-                
-               
-                    }
-                };
-
-                setInterval(self.updateStocks, 3000);
-            };
-
-            ko.bindingHandlers.ko_autocomplete = {
-                init: function (element, params) {
-                    $(element).autocomplete(params());
-                },
-                update: function (element, params) {
-                    $(element).autocomplete("option", "source", params().source);
-                }
 
 
-            };
+            }
+        };
 
-            ko.applyBindings(new stockViewModel());
+        setInterval(self.updateStocks, 3000);
+    };
+
+    ko.bindingHandlers.ko_autocomplete = {
+        init: function (element, params) {
+            $(element).autocomplete(params());
+        },
+        update: function (element, params) {
+            $(element).autocomplete("option", "source", params().source);
+        }
+
+
+    };
+
+    ko.applyBindings(new stockViewModel());
 
 
 
