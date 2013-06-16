@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Web
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "stocktikr", "stocktikr.API\stocktikr.csproj", "{45D338D0-0DC9-478C-B71F-5F53672FBA70}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{45D338D0-0DC9-478C-B71F-5F53672FBA70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45D338D0-0DC9-478C-B71F-5F53672FBA70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45D338D0-0DC9-478C-B71F-5F53672FBA70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45D338D0-0DC9-478C-B71F-5F53672FBA70}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

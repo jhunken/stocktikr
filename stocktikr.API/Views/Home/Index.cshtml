@@ -1,0 +1,136 @@
+﻿@{
+    ViewBag.Title = "stocktikr";
+}
+<form>
+    <div class="row">
+        <div class="span12">
+            <div class="ui-widget">
+
+                <input type="text" id="symbolInput" placeholder="Enter stock symbol or company name" data-bind="value: stockToAdd, ko_autocomplete: { source: '/api/symbol', select: addStock }" class="input-xxlarge" />
+
+            </div>
+            <table id="productsTbl" class="table table-bordered table-striped" style="width: 100%" data-bind="visible: allStocks().length > 0">
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Change</th>
+                        <th>Remove</th>
+
+                    </tr>
+                </thead>
+
+                <tbody data-bind="foreach: allStocks" class="table table-bordered table-striped">
+                    <tr>
+                        <td>
+                            <input type="hidden" data-bind="value: $data.Symbol, attr: { name: 'Stocks[' + $index() + '].Symbol' }" />
+                            <span data-bind="text: $data.Symbol"></span>
+                        </td>
+
+                        <td>
+                            <input type="hidden" data-bind="value: $data.Description, attr: { name: 'Stocks[' + $index() + '].Description' }" />
+                            <span data-bind="text: $data.Description"></span></td>
+                        <td>
+
+                            <span data-bind="text: '$'+ $data.Price()"></span></td>
+                        <td>
+
+                            <span data-bind="text: Number((parseFloat($data.LastPrice()) / parseFloat($data.Price())-1) * -100).toFixed(4) + '%'"></span></td>
+                        <td>
+
+                            <a href='#' data-bind='click: $parent.removeStock' class="btn"><i class="icon-trash"></i>Remove</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>
+
+                @*<button value="Remove All Stocks" class="btn btn-primary" data-bind="enable:allStocks().length > 0, click: removeAllStocks" />*@
+            </p>
+        </div>
+    </div>
+</form>
+
+<script>
+    //knockout viewmodel
+    var stockViewModel = function () {
+        var self = this;
+        self.stockToAdd = ko.observable();
+        self.allStocks = ko.observableArray([]);
+                
+        self.addStock = function (event, ui) {
+            $(event.target).val("");
+
+            var stockSymbol = ui.item.value;
+            //get product object
+            var url = '@Url.Content("~/api/Symbol/GetBySymbol")';
+            $.getJSON(url, { symbol: stockSymbol }, function (data) {
+                if (data.Data.success == true) {
+                    self.stockToAdd = ko.mapping.fromJS(data.Data.stock);
+                    self.allStocks.push(self.stockToAdd);
+                }
+            });
+            return false;
+        };
+        self.updateStockPrice = function (stock) {
+            var match = ko.utils.arrayFirst(self.allStocks(), function (item) {
+                return item.Symbol() === stock.Symbol;
+            });
+            if (!match)
+                return 'error';
+            else {
+                match.LastPrice(match.Price());
+                match.Price(stock.Price);
+            }
+        };
+        self.removeStock = function (stock) { self.allStocks.remove(stock) };
+
+        self.updateStocks = function () {
+            if (self.allStocks().length > 0) {
+
+
+                var url = '@Url.Content("~/api/Symbol/PostBulkUpdate")';
+                var stocks = ko.mapping.toJSON(self.allStocks());
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: stocks,
+                    contentType: 'application/json',
+                    processData: false,
+                    dataType : 'json',
+                    success: function (data) {
+                        if (data.Data.success == true) {
+                            var stocks = data.Data.stocks;
+                            stocks.forEach(function (element, index, array) {
+                                self.updateStockPrice(element);
+                            });
+                            
+           
+                        }
+                    }
+                });
+                
+               
+                    }
+                };
+
+                setInterval(self.updateStocks, 3000);
+            };
+
+            ko.bindingHandlers.ko_autocomplete = {
+                init: function (element, params) {
+                    $(element).autocomplete(params());
+                },
+                update: function (element, params) {
+                    $(element).autocomplete("option", "source", params().source);
+                }
+
+
+            };
+
+            ko.applyBindings(new stockViewModel());
+
+
+
+</script>
