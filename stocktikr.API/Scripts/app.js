@@ -9,7 +9,7 @@ var hasStorage = (function () {
     }
 }());
 
-var stockData = [];
+var stockData = ko.observableArray([]);
 if (hasStorage) {
 
     var lsData = localStorage.getItem('stockTikr');
@@ -22,7 +22,7 @@ if (hasStorage) {
         }
 
     } catch (e) {
-
+       
     }
 
 }
