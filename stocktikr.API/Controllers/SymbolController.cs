@@ -54,6 +54,7 @@ namespace stocktikr.API.Controllers
             if (stock != null)
             {
                 stock.Price = stock.GetRandomPrice(stock);
+                stock.LastPrice = stock.Price;
                 return new JsonResult { Data = new { success = true, stock = stock }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
             }
             else

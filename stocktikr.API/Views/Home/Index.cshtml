@@ -33,10 +33,10 @@
                             <span data-bind="text: $data.Description"></span></td>
                         <td>
 
-                            <span data-bind="text: '$' + $data.Price()"></span></td>
+                            <span data-bind="text: '$' + $data.Price(), style: { color: parseFloat($data.LastPrice()) > parseFloat($data.Price()) ? 'red' : 'green' }"></span></td>
                         <td>
 
-                            <span data-bind="text: Number((parseFloat($data.LastPrice()) / parseFloat($data.Price()) - 1) * -100).toFixed(4) + '%'"></span></td>
+                            <span data-bind="text: Number((parseFloat($data.LastPrice()) / parseFloat($data.Price()) - 1) * -100).toFixed(4) + '%', style: { color: parseFloat($data.LastPrice()) > parseFloat($data.Price()) ? 'red' : 'green' }"></span></td>
                         <td>
 
                             <a href='#' data-bind='click: $parent.removeStock' class="btn"><i class="icon-trash"></i>Remove</a>
@@ -52,85 +52,6 @@
     </div>
 </form>
 
-<script>
-    //knockout viewmodel
-    var stockViewModel = function () {
-        var self = this;
-        self.stockToAdd = ko.observable();
-        self.allStocks = ko.observableArray([]);
-
-        self.addStock = function (event, ui) {
-            $(event.target).val("");
-
-            var stockSymbol = ui.item.value;
-            //get product object
-            var url = '@Url.Content("~/api/Symbol/GetBySymbol")';
-            $.getJSON(url, { symbol: stockSymbol }, function (data) {
-                if (data.Data.success == true) {
-                    self.stockToAdd = ko.mapping.fromJS(data.Data.stock);
-                    self.allStocks.push(self.stockToAdd);
-                }
-            });
-            return false;
-        };
-        self.updateStockPrice = function (stock) {
-            var match = ko.utils.arrayFirst(self.allStocks(), function (item) {
-                return item.Symbol() === stock.Symbol;
-            });
-            if (!match)
-                return 'error';
-            else {
-                match.LastPrice(match.Price());
-                match.Price(stock.Price);
-            }
-        };
-        self.removeStock = function (stock) { self.allStocks.remove(stock) };
-
-        self.updateStocks = function () {
-            if (self.allStocks().length > 0) {
-
-
-                var url = '@Url.Content("~/api/Symbol/PostBulkUpdate")';
-                var stocks = ko.mapping.toJSON(self.allStocks());
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: stocks,
-                    contentType: 'application/json',
-                    processData: false,
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data.Data.success == true) {
-                            var stocks = data.Data.stocks;
-                            stocks.forEach(function (element, index, array) {
-                                self.updateStockPrice(element);
-                            });
-
-
-                        }
-                    }
-                });
-
-
-            }
-        };
-
-        setInterval(self.updateStocks, 3000);
-    };
-
-    ko.bindingHandlers.ko_autocomplete = {
-        init: function (element, params) {
-            $(element).autocomplete(params());
-        },
-        update: function (element, params) {
-            $(element).autocomplete("option", "source", params().source);
-        }
-
-
-    };
-
-    ko.applyBindings(new stockViewModel());
-
-
-
-</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/app")
+}

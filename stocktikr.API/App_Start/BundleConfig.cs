@@ -18,8 +18,10 @@ namespace stocktikr.API
                         "~/Scripts/jquery.unobtrusive*",
                         "~/Scripts/jquery.validate*"));
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
-                        "~/Scripts/knockout-2.2.0.debug.js",
-                        "~/Scripts/knockout.mapping-latest.debug.js"));
+                        "~/Scripts/knockout-2.2.0*",
+                        "~/Scripts/knockout.mapping-latest*"));
+            bundles.Add(new ScriptBundle("~/bundles/app").Include(
+                        "~/Scripts/app.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
@@ -30,16 +32,9 @@ namespace stocktikr.API
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",
-                        "~/Content/themes/base/jquery.ui.resizable.css",
-                        "~/Content/themes/base/jquery.ui.selectable.css",
-                        "~/Content/themes/base/jquery.ui.accordion.css",
+                        
                         "~/Content/themes/base/jquery.ui.autocomplete.css",
-                        "~/Content/themes/base/jquery.ui.button.css",
-                        "~/Content/themes/base/jquery.ui.dialog.css",
-                        "~/Content/themes/base/jquery.ui.slider.css",
-                        "~/Content/themes/base/jquery.ui.tabs.css",
-                        "~/Content/themes/base/jquery.ui.datepicker.css",
-                        "~/Content/themes/base/jquery.ui.progressbar.css",
+                        
                         "~/Content/themes/base/jquery.ui.theme.css"));
         }
     }
