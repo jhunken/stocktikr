@@ -18,7 +18,7 @@ namespace stocktikr.API
 
 
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
-                        "~/Scripts/knockout-2.2.0*",
+                        "~/Scripts/knockout-2.2.1*",
                         "~/Scripts/knockout.mapping-latest*"));
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
                         "~/Scripts/app.js"));

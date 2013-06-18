@@ -81,9 +81,17 @@ var stockViewModel = function () {
                 success: function (data) {
                     if (data.Data.success == true) {
                         var stocks = data.Data.stocks;
-                        stocks.forEach(function (element, index, array) {
-                            self.updateStockPrice(element);
+                        //had to remove this as IE doesn't support forEach
+                        //stocks.forEach(function (element, index, array) {
+                        //    self.updateStockPrice(element);
+                        //});
+
+                        //knockout provides a nice foreach utility function that works in IE
+                        ko.utils.arrayForEach(stocks, function (item) {
+                            self.updateStockPrice(item);
                         });
+
+                        
                         localStorage.setItem('stockTikr', ko.toJSON(self.allStocks));
 
                     }

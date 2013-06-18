@@ -23,7 +23,7 @@ namespace stocktikr.API.Controllers
 
 
             return _stock.GetStocks();
-            
+
         }
 
         // GET api/symbol?term=
@@ -31,16 +31,17 @@ namespace stocktikr.API.Controllers
         public IEnumerable<AutoCompleteModel> Get(string term)
         {
 
-            var stocks = from s in _stock.GetStocks()
-                         where s.Symbol.Contains(term) || s.Description.Contains(term)
+            var stocks = _stock.GetStocks();
+            var result = from s in stocks
+                         where s.Symbol.ToLower().Contains(term.ToLower()) || s.Description.ToLower().Contains(term.ToLower())
                          select new AutoCompleteModel
                          {
                              label = s.Symbol + " - " + s.Description,
                              value = s.Symbol
                          };
-            if (stocks != null)
+            if (result != null)
             {
-                return stocks;
+                return result;
             }
             return null;
         }
@@ -64,7 +65,7 @@ namespace stocktikr.API.Controllers
 
         }
 
-        
+
         public JsonResult PostBulkUpdate(List<Stock> stocks)
         {
             //receive list of symbols for bulk price update
@@ -75,7 +76,7 @@ namespace stocktikr.API.Controllers
                 {
                     var dbStock = (from s in _stock.GetStocks()
                                    where s.Symbol.ToLower() == stock.Symbol.ToLower()
-                                 select s).FirstOrDefault();
+                                   select s).FirstOrDefault();
                     if (dbStock != null)
                     {
                         //dbStock.LastPrice = stock.Price;
