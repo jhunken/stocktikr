@@ -10,6 +10,12 @@ namespace stocktikr.API.Controllers
     {
         public ActionResult Index()
         {
+            //our initial view
+            return View();
+        }
+        public ActionResult About()
+        {
+            //about view
             return View();
         }
     }

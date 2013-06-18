@@ -9,10 +9,16 @@ namespace stocktikr.API.Models
 {
     public class Stock
     {
-        string path = HttpContext.Current.Server.MapPath("~/resources/symbolNames.txt");
+        private string path = HttpContext.Current.Server.MapPath("~/resources/symbolNames.txt");
+
+        public decimal Price { get; set; }
+        public string Symbol { get; set; }
+        public string Description { get; set; }
+        public decimal LastPrice { get; set; }
+
         public IEnumerable<Stock> GetStocks()
         {
-
+            //load stock symbols data from txt file
             string[] allLines = File.ReadAllLines(path);
             IEnumerable<Stock> stocks = from s in allLines
                                         let data = s.Split('\t')
@@ -45,11 +51,7 @@ namespace stocktikr.API.Models
 
 
         }
-        public decimal Price { get; set; }
-        public string Symbol { get; set; }
-        public string Description { get; set; }
 
-        public decimal LastPrice { get; set; }
 
 
 

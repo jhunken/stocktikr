@@ -18,11 +18,11 @@ if (hasStorage) {
         if (temp != null) {
             delete temp.__ko_mapping__;
             stockData = ko.mapping.fromJS(temp);
-            
+
         }
 
     } catch (e) {
-       
+
     }
 
 }
@@ -60,7 +60,10 @@ var stockViewModel = function () {
             match.Price(stock.Price);
         }
     };
-    self.removeStock = function (stock) { self.allStocks.remove(stock) };
+    self.removeStock = function (stock) {
+        self.allStocks.remove(stock);
+        localStorage.setItem('stockTikr', ko.toJSON(self.allStocks));
+    };
 
     self.updateStocks = function () {
         if (self.allStocks().length > 0) {
@@ -107,3 +110,7 @@ ko.bindingHandlers.ko_autocomplete = {
 
 ko.applyBindings(new stockViewModel());
 
+//handle active links on navbar
+$(document).ready(function () {
+    $('ul.nav > li > a[href="' + document.location.pathname + '"]').parent().addClass('active');
+});
