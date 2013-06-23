@@ -1,6 +1,3 @@
-stocktikr
-=========
-
 # About
 StockTikr is a small project designed to illustrate a few web technologies. Specifically:
 * ASP.NET MVC/API
@@ -8,6 +5,8 @@ StockTikr is a small project designed to illustrate a few web technologies. Spec
 * HTML5 Local Storage
 * Responsive web design using Bootstrap
 * Asynchronous Updates and AutoComplete using jQuery
+
+*Stock data is FAKE!*
 
 [Demo](http://stocktikr.apphb.com)
 # To Use
